@@ -15,11 +15,31 @@ mongoose.connect(db, err =>{
     
 })
 
+//middleware for verifying jwt token
+function verifyToken(req, res, next){
+    if(!req.headers.authorization){ //if token not present
+        return res.status(401).send('Unauthorized request')
+    }
+    let token = req.headers.authorization.split(' ')[1] //get token
+    if(token === 'null'){
+        return res.status(401).send('Unauthorized request')
+    }
+    let payload = jwt.verify(token, 'umarashraf') //verify token 
+    if(!payload){
+        return res.status(401).send('Unauthorized request')
+    }
+    req.userId = payload.subject
+    console.log(payload)
+    next()
+
+}
+//middleware ends
+
 router.get('/', (req,res) =>{
     res.send('from api route')
 });
-exists=false
-router.post('/register', (req,res)=>{
+
+router.post('/register', verifyToken, (req,res)=>{
     let userData = req.body
     let user = new User(userData)
    
@@ -63,7 +83,7 @@ router.post('/login', (req,res) =>{
     })
 });
 
-router.get('/todos', (req,res) =>{
+router.get('/todos', verifyToken, (req,res) =>{
     let todos =[
         {
             "_id":"1",

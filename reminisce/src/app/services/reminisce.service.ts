@@ -20,4 +20,12 @@ export class ReminisceService {
   loggedIn(){
     return !!localStorage.getItem('token')
   }
+
+  getToken(){
+    return localStorage.getItem('token')
+  }
+
+  getTodos(){
+    return this.http.get<any>('http://localhost:3000/api/todos')
+  }
 }
