@@ -1,7 +1,7 @@
 # meanAuth
 -> This application uses Angular on frontend and nodejs,mongo on backend
 
--> demonstrates the how interceptor works
+-> demonstrates how interceptor works
 
 -> demonstrates how jwt is verified and signed
 
